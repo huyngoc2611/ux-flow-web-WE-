@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wine Embassy · B2B Strategy Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --paper: #F5F0E6;
+    --paper-soft: #EDE6D7;
+    --paper-warm: #F9F5EC;
+    --ink: #1C1410;
+    --ink-soft: #4A3D34;
+    --ink-muted: #8B7F72;
+    --ink-faint: #B8AEA0;
+    --burgundy: #6B1A1A;
+    --burgundy-deep: #4A0F0F;
+    --gold: #A8864E;
+    --gold-soft: #D4B87A;
+    --teal-ink: #1D5F4F;
+    --line: rgba(28, 20, 16, 0.12);
+    --line-soft: rgba(28, 20, 16, 0.06);
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.5;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .doc-head {
+    padding: 64px 40px 48px;
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-warm);
+  }
+  .doc-head-inner { max-width: 1200px; margin: 0 auto; }
+  .doc-eyebrow {
+    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--burgundy); font-weight: 500; margin-bottom: 20px;
+    display: inline-flex; align-items: center; gap: 12px;
+  }
+  .doc-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--burgundy); }
+  .doc-title {
+    font-family: var(--serif);
+    font-size: clamp(40px, 5vw, 60px);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin-bottom: 20px;
+    max-width: 880px;
+  }
+  .doc-title em { font-style: italic; color: var(--burgundy); }
+  .doc-sub {
+    font-size: 17px; color: var(--ink-soft); line-height: 1.6;
+    max-width: 720px;
+  }
+
+  .toc {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 40px;
+  }
+  .toc-item {
+    padding: 20px 24px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    text-decoration: none;
+    color: var(--ink);
+    transition: all 0.2s;
+  }
+  .toc-item:hover { border-color: var(--burgundy); transform: translateX(4px); }
+  .toc-num {
+    font-family: var(--serif); font-style: italic; font-size: 22px;
+    color: var(--burgundy); margin-bottom: 6px;
+  }
+  .toc-name { font-family: var(--serif); font-size: 19px; font-weight: 500; margin-bottom: 4px; }
+  .toc-desc { font-size: 12px; color: var(--ink-muted); }
+
+  section { padding: 100px 40px; border-bottom: 1px solid var(--line); }
+  .sec-inner { max-width: 1200px; margin: 0 auto; }
+  .sec-head { margin-bottom: 60px; }
+  .sec-eyebrow {
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--burgundy); font-weight: 500; margin-bottom: 18px;
+    display: inline-flex; align-items: center; gap: 12px;
+  }
+  .sec-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--burgundy); }
+  h2 {
+    font-family: var(--serif);
+    font-size: clamp(32px, 4vw, 44px);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 18px;
+  }
+  h2 em { font-style: italic; color: var(--burgundy); }
+  .sec-desc {
+    font-size: 16px; color: var(--ink-soft); line-height: 1.65;
+    max-width: 720px;
+  }
+
+  /* ========== UX FLOW ========== */
+  .flow-wrap {
+    position: relative;
+    padding: 40px 0;
+    overflow-x: auto;
+  }
+  .flow-track {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0;
+    min-width: 1100px;
+    position: relative;
+  }
+  .flow-line {
+    position: absolute;
+    top: 65px;
+    left: 8%;
+    right: 8%;
+    height: 1px;
+    background: repeating-linear-gradient(90deg, var(--burgundy) 0, var(--burgundy) 4px, transparent 4px, transparent 8px);
+  }
+  .flow-stage {
+    padding: 0 12px;
+    position: relative;
+    text-align: center;
+  }
+  .flow-dot {
+    width: 18px; height: 18px;
+    margin: 56px auto 0;
+    background: var(--paper);
+    border: 2px solid var(--burgundy);
+    border-radius: 50%;
+    position: relative;
+    z-index: 1;
+  }
+  .flow-stage.active .flow-dot {
+    background: var(--burgundy);
+    box-shadow: 0 0 0 6px rgba(107, 26, 26, 0.15);
+  }
+  .flow-stage-num {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 15px;
+    color: var(--burgundy);
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+  }
+  .flow-stage-name {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    line-height: 1.15;
+  }
+  .flow-stage-tag {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  .flow-quote {
+    margin-top: 28px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 13.5px;
+    color: var(--burgundy);
+    line-height: 1.45;
+    padding: 12px 8px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .flow-mech {
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    text-align: left;
+  }
+  .flow-mech-label {
+    font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-muted); font-weight: 500; margin-bottom: 4px;
+    text-align: center;
+  }
+
+  .flow-insights {
+    margin-top: 72px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+  .flow-ins {
+    padding: 32px 28px;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    border-top: 3px solid var(--burgundy);
+  }
+  .flow-ins-num {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--burgundy);
+    margin-bottom: 10px;
+    letter-spacing: 0.05em;
+  }
+  .flow-ins-name {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 14px;
+    line-height: 1.25;
+  }
+  .flow-ins-body {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+  }
+
+  /* ========== INVESTOR PILLARS ========== */
+  .pillars-section { background: var(--ink); color: var(--paper); border-bottom: none; }
+  .pillars-section h2 { color: var(--paper); }
+  .pillars-section h2 em { color: var(--gold-soft); }
+  .pillars-section .sec-eyebrow { color: var(--gold-soft); }
+  .pillars-section .sec-eyebrow::before { background: var(--gold-soft); }
+  .pillars-section .sec-desc { color: rgba(245, 240, 230, 0.7); }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+  .pillar {
+    padding: 36px 32px;
+    border: 1px solid rgba(245, 240, 230, 0.15);
+    border-radius: 2px;
+    position: relative;
+    background: rgba(245, 240, 230, 0.02);
+    transition: all 0.3s;
+  }
+  .pillar:hover {
+    border-color: var(--gold-soft);
+    background: rgba(168, 134, 78, 0.04);
+    transform: translateY(-4px);
+  }
+  .pillar-num {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--gold-soft);
+    letter-spacing: 0.08em;
+    margin-bottom: 18px;
+  }
+  .pillar-hero {
+    font-family: var(--serif);
+    font-size: 56px;
+    line-height: 1;
+    font-weight: 300;
+    color: var(--paper);
+    letter-spacing: -0.03em;
+    margin-bottom: 6px;
+  }
+  .pillar-hero em { color: var(--gold-soft); font-style: italic; font-weight: 400; }
+  .pillar-hero .unit {
+    font-size: 18px;
+    color: var(--gold-soft);
+    font-style: italic;
+    margin-left: 4px;
+  }
+  .pillar-head {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--paper);
+    margin-top: 14px;
+    margin-bottom: 16px;
+    line-height: 1.25;
+  }
+  .pillar-body {
+    font-size: 13.5px;
+    color: rgba(245, 240, 230, 0.72);
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+  .pillar-foot {
+    padding-top: 16px;
+    border-top: 1px solid rgba(168, 134, 78, 0.2);
+    font-size: 11.5px;
+    font-style: italic;
+    color: var(--gold-soft);
+    line-height: 1.5;
+  }
+
+  /* ========== CHARTS ========== */
+  .charts { display: flex; flex-direction: column; gap: 80px; }
+  .chart-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .chart-row.wide { grid-template-columns: 1fr; }
+  .chart-meta { }
+  .chart-tag {
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--burgundy); font-weight: 500; margin-bottom: 14px;
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .chart-tag::before { content: ''; width: 20px; height: 1px; background: var(--burgundy); }
+  .chart-title {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+  }
+  .chart-title em { font-style: italic; color: var(--burgundy); }
+  .chart-desc {
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+    margin-bottom: 20px;
+  }
+  .chart-insight {
+    padding: 20px 24px;
+    background: var(--paper-warm);
+    border-left: 3px solid var(--burgundy);
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    line-height: 1.65;
+  }
+  .chart-insight strong {
+    display: block;
+    font-family: var(--serif);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--burgundy);
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+  .chart-box {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 32px 28px;
+    position: relative;
+  }
+  .chart-canvas-wrap {
+    position: relative; width: 100%; height: 340px;
+  }
+  .chart-canvas-wrap.tall { height: 440px; }
+  .chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+  .legend-swatch {
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .legend-swatch-box {
+    width: 12px; height: 12px; border-radius: 2px;
+  }
+
+  /* ========== CLOSING ========== */
+  .closing {
+    background: var(--paper-warm);
+    padding: 100px 40px;
+    text-align: center;
+    border-bottom: none;
+  }
+  .closing-inner { max-width: 720px; margin: 0 auto; }
+  .closing h2 { margin-bottom: 24px; }
+  .closing-body {
+    font-size: 17px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    font-family: var(--serif);
+    font-style: italic;
+  }
+  .closing-sign {
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  @media (max-width: 900px) {
+    .toc { grid-template-columns: 1fr; }
+    .flow-insights { grid-template-columns: 1fr; }
+    .pillars { grid-template-columns: 1fr; }
+    .chart-row { grid-template-columns: 1fr; gap: 24px; }
+    .doc-head, section { padding-left: 24px; padding-right: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="doc-head">
+  <div class="doc-head-inner">
+    <div class="doc-eyebrow">B2B strategy brief · Q2 2026</div>
+    <h1 class="doc-title">Wine Embassy — flow khách hàng, định vị đầu tư, và <em>dữ liệu để quyết định</em></h1>
+    <p class="doc-sub">Tài liệu tổng hợp 3 góc nhìn: hành trình UX hấp dẫn buyer B2B, những điểm mạnh có thể pitch với investor, và các biểu đồ trực quan giúp khách chọn đúng rượu trong 243 SKU.</p>
+
+    <div class="toc">
+      <a href="#flow" class="toc-item">
+        <div class="toc-num">I.</div>
+        <div class="toc-name">Hành trình buyer B2B</div>
+        <div class="toc-desc">7 stage · từ arrival đến habit · cảm xúc &amp; cơ chế</div>
+      </a>
+      <a href="#invest" class="toc-item">
+        <div class="toc-num">II.</div>
+        <div class="toc-name">Keypoint cho investor</div>
+        <div class="toc-desc">6 pillar định vị · dữ liệu chứng minh</div>
+      </a>
+      <a href="#charts" class="toc-item">
+        <div class="toc-num">III.</div>
+        <div class="toc-name">Biểu đồ quyết định</div>
+        <div class="toc-desc">4 chart giúp buyer chọn đúng SKU</div>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ========== SECTION 1: UX FLOW ========== -->
+<section id="flow">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div class="sec-eyebrow">I. UX flow</div>
+      <h2>Hành trình khách hàng B2B —<br>từ tò mò đến <em>thói quen</em></h2>
+      <p class="sec-desc">7 stage thiết kế có chủ đích. Mỗi stage có một câu buyer tự nói với mình (emotional beat) và một cơ chế web cụ thể đáp lại. Thứ tự commitment tăng dần — không bắt buyer cho nhiều trước khi họ nhận đủ.</p>
+    </div>
+
+    <div class="flow-wrap">
+      <div class="flow-track">
+        <div class="flow-line"></div>
+
+        <div class="flow-stage active">
+          <div class="flow-stage-num">Stage 01</div>
+          <div class="flow-stage-name">Arrival</div>
+          <div class="flow-stage-tag">0–10 giây</div>
+          <div class="flow-dot"></div>
+          <div class="flow-quote">"Ồ, đây không phải PDF catalogue khô khan."</div>
+          <div class="flow-mech-label">Cơ chế web</div>
+          <div class="flow-mech">Hero editorial serif · trust strip 5 con số · persona card đã highlight sẵn HORECA</div>
+        </div>
+
+        <div class="flow-stage">
+          <div class="flow-stage-num">Stage 02</div>
+          <div class="flow-stage-name">Orient</div>
+          <div class="flow-stage-tag">10–60 giây</div>
+          <div class="flow-dot"></div>
+          <div class="flow-quote">"Tôi thấy Wine Embassy hiểu đúng loại buyer của tôi."</div>
+          <div class="flow-mech-label">Cơ chế web</div>
+          <div class="flow-mech">3 persona landing riêng biệt · sample menu mẫu · margin table cho retailer</div>
+        </div>
+
+        <div class="flow-stage">
+          <div class="flow-stage-num">Stage 03</div>
+          <div class="flow-stage-name">Explore</div>
+          <div class="flow-stage-tag">1–5 phút</div>
+          <div class="flow-dot"></div>
+          <div class="flow-quote">"243 SKU thật, không phải con số trống."</div>
+          <div class="flow-mech-label">Cơ chế web</div>
+          <div class="flow-mech">Portfolio Explorer · 6 filter đa chiều · compare drawer tối đa 4 chai</div>
+        </div>
+
+        <div class="flow-stage">
+          <div class="flow-stage-num">Stage 04</div>
+          <div class="flow-stage-name">Validate</div>
+          <div class="flow-stage-tag">5–15 phút</div>
+          <div class="flow-dot"></div>
+          <div class="flow-quote">"Các tạp chí uy tín đã chấm — không chỉ seller tự nói."</div>
+          <div class="flow-mech-label">Cơ chế web</div>
+          <div class="flow-mech">Score badge · producer story · link tới nguồn critic · tech sheet PDF</div>
+        </div>
+
+        <div class="flow-stage">
+          <div class="flow-stage-num">Stage 05</div>
+          <div class="flow-stage-name">Trial</div>
+          <div class="flow-stage-tag">Ngày 1–3</div>
+          <div class="flow-dot"></div>
+          <div class="flow-quote">"Sample miễn phí — tôi không mất gì để thử."</div>
+          <div class="flow-mech-label">Cơ chế web</div>
+          <div class="flow-mech">Form 4 field · AM chọn 3 chai phù hợp · giao tới tận quán · không cần sign up</div>
+        </div>
+
+        <div class="flow-stage">
+          <div class="flow-stage-num">Stage 06</div>
+          <div class="flow-stage-name">Convert</div>
+          <div class="flow-stage-tag">Tuần 1–4</div>
+          <div class="flow-dot"></div>
+          <div class="flow-quote">"AM trả lời chuyên nghiệp — không phải chatbot."</div>
+          <div class="flow-mech-label">Cơ chế web</div>
+          <div class="flow-mech">RFQ · quote 24h · áp tier pricing · phương án giao · e-invoice</div>
+        </div>
+
+        <div class="flow-stage">
+          <div class="flow-stage-num">Stage 07</div>
+          <div class="flow-stage-name">Habit</div>
+          <div class="flow-stage-tag">Tháng 2+</div>
+          <div class="flow-dot"></div>
+          <div class="flow-quote">"Re-order trong 2 click — tôi không muốn đổi nhà cung cấp."</div>
+          <div class="flow-mech-label">Cơ chế web</div>
+          <div class="flow-mech">Saved list · 1-click re-order · allocation pre-book · invite tasting event</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-insights">
+      <div class="flow-ins">
+        <div class="flow-ins-num">Insight I.</div>
+        <div class="flow-ins-name">Commitment tăng dần, không phải thông tin tăng dần</div>
+        <div class="flow-ins-body">Stage 5 chỉ yêu cầu 4 field (tên quán, email, cuisine, style). Stage 6 đòi email xác thực + chọn SKU. Stage 7 (apply full B2B account) chỉ bật sau PO đầu tiên. Đảo thứ tự này sẽ cắt 70% lead ngay vòng đầu.</div>
+      </div>
+      <div class="flow-ins">
+        <div class="flow-ins-num">Insight II.</div>
+        <div class="flow-ins-name">Mỗi stage đáp lại một câu hỏi ngầm</div>
+        <div class="flow-ins-body">Buyer B2B không hỏi "sản phẩm có đẹp không" — họ hỏi "tôi có an toàn nếu chọn đối tác này". Trust strip trả lời quy mô, critic score trả lời chất lượng, AM trả lời service. Mỗi beat giải toả một lo ngại cụ thể.</div>
+      </div>
+      <div class="flow-ins">
+        <div class="flow-ins-num">Insight III.</div>
+        <div class="flow-ins-name">Retention là nơi 80% lợi nhuận nằm</div>
+        <div class="flow-ins-body">HORECA buyer ở stage 7 order đều hàng tháng trong 3–5 năm. Cost of serve thấp (self-service re-order) + switching cost cao (menu đã đào tạo) = LTV vượt trội so với vendor thông thường.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION 2: INVESTOR PILLARS ========== -->
+<section id="invest" class="pillars-section">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div class="sec-eyebrow">II. Investor thesis</div>
+      <h2>Tại sao Wine Embassy <em>hấp dẫn</em> với nhà đầu tư</h2>
+      <p class="sec-desc">6 pillar định vị dựa trên dữ liệu thực từ portfolio 2026, không phải marketing narrative. Mỗi pillar có con số chứng minh và ngụ ý chiến lược.</p>
+    </div>
+
+    <div class="pillars">
+
+      <div class="pillar">
+        <div class="pillar-num">Pillar I.</div>
+        <div class="pillar-hero">243</div>
+        <div class="pillar-head">Curatorial moat, không phải transactional importer</div>
+        <div class="pillar-body">243 SKU chọn lọc từ 12 quốc gia và 44+ vùng trồng nho. 44% portfolio (106 chai) đạt 90+ điểm từ critics độc lập. Đây là chiều sâu của curator — mất 14 năm để xây, không copy được bằng vốn.</div>
+        <div class="pillar-foot">New Zealand: 100% SKU đạt 90+ · Tây Ban Nha: 81% · Portugal &amp; Úc: 100% — đây là proof of selectivity</div>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-num">Pillar II.</div>
+        <div class="pillar-hero">3<span class="unit">brand</span></div>
+        <div class="pillar-head">Brand architecture đa tầng: một inventory, ba P&amp;L</div>
+        <div class="pillar-body">Wine Embassy (B2B corporate) + Vier Fine Wines (retail volume) + Nier Fine Wines (concept margin). Mỗi brand bán cùng inventory cho một customer segment khác, với pricing và positioning riêng. Hiệu quả vốn lưu động đặc biệt cao.</div>
+        <div class="pillar-foot">Lớp storytelling của Nier tạo premium margin trong khi Vier scale volume</div>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-num">Pillar III.</div>
+        <div class="pillar-hero"><em>LotR</em></div>
+        <div class="pillar-head">Năng lực private labelling đã được chứng minh</div>
+        <div class="pillar-body">Hai collection licensed real: The Lord of the Rings™ và Peaky Blinders — đây là IP deal thực, không phải white-label generic. Năng lực này mở cánh cửa cho hotel chain tự xây wine brand riêng và corporate gifting cao cấp.</div>
+        <div class="pillar-foot">Barrier to entry cao: cần network producer + licensing relationship + design team</div>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-num">Pillar IV.</div>
+        <div class="pillar-hero">14<span class="unit">năm</span></div>
+        <div class="pillar-head">Compounding producer relationships</div>
+        <div class="pillar-body">Yves Cuilleron phân phối 5 SKU across 4 AOC Rhône Valley (IGP, Crozes-Hermitage, Saint-Joseph, Côte-Rôtie). Gosset Champagne 7 cuvée. Pattern này không xây bằng cold outreach — đây là kết quả của 14 năm building trust với boutique winery châu Âu.</div>
+        <div class="pillar-foot">François &amp; Philippe (founders Pháp) = credibility với European winemaker</div>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-num">Pillar V.</div>
+        <div class="pillar-hero">440K<br><span class="unit" style="font-size:15px;">→ 12.9M VND</span></div>
+        <div class="pillar-head">Price architecture phủ toàn bộ F&amp;B spectrum</div>
+        <div class="pillar-body">Từ 440K cho bistro entry đến 12.9M cho fine dining flagship — cùng một catalogue phục vụ được Michelin restaurant, chuỗi hotel 5 sao, retailer đại chúng, và corporate gifting. 70% portfolio nằm trong "F&amp;B sweet spot" 500K–2M.</div>
+        <div class="pillar-foot">Median 1.19M VND · không cần chuyển đối tác khi khách nâng/hạ tier</div>
+      </div>
+
+      <div class="pillar">
+        <div class="pillar-num">Pillar VI.</div>
+        <div class="pillar-hero">~1L</div>
+        <div class="pillar-head">Category tailwinds: wine consumption VN còn rất thấp</div>
+        <div class="pillar-body">Việt Nam ~1 lít rượu vang / người / năm so với Ý 42L, Pháp 40L, Úc 25L. Middle class tăng, F&amp;B scene phát triển, thói quen wine-with-dinner đang hình thành ở đô thị lớn. Wine Embassy đã có 14 năm head-start khi thị trường bắt đầu scale thực sự.</div>
+        <div class="pillar-foot">Nguồn: OIV wine consumption data — thị trường VN dự báo 7–10% CAGR</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECTION 3: DECISION CHARTS ========== -->
+<section id="charts">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div class="sec-eyebrow">III. Decision charts</div>
+      <h2>Bốn biểu đồ giúp buyer <em>chọn đúng</em> trong 243 SKU</h2>
+      <p class="sec-desc">Mỗi chart trả lời một câu hỏi quyết định của buyer B2B. Không phải infographic cho đẹp — đây là công cụ để sommelier, F&amp;B director, và retailer chọn SKU nhanh và đúng.</p>
+    </div>
+
+    <div class="charts">
+
+      <!-- Chart A: Value matrix -->
+      <div class="chart-row">
+        <div class="chart-meta">
+          <div class="chart-tag">Chart A · Value matrix</div>
+          <div class="chart-title">Giá vs điểm thẩm định —<br><em>tìm wines "đáng đồng tiền"</em></div>
+          <div class="chart-desc">114 wines có điểm 90-100 từ critics được phân bố theo giá retail. Wines ở góc trên bên trái là "best value" — điểm cao với giá dễ tiếp cận. Wines ở góc trên bên phải là "flagship" cho fine dining. Buyer có thể click điểm để xem tên.</div>
+          <div class="chart-insight">
+            <strong>Câu hỏi buyer trả lời được</strong>
+            Trong budget dưới 1.5M, có bao nhiêu wines 92+ điểm? → Đếm điểm trong ô tương ứng. Đây là cách chọn house pour tốt mà không overspend.
+          </div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-canvas-wrap tall">
+            <canvas id="chartA"></canvas>
+          </div>
+          <div class="chart-legend">
+            <span class="legend-swatch"><span class="legend-swatch-box" style="background:#6B1A1A;"></span>Pháp</span>
+            <span class="legend-swatch"><span class="legend-swatch-box" style="background:#A8864E;"></span>Ý</span>
+            <span class="legend-swatch"><span class="legend-swatch-box" style="background:#1D5F4F;"></span>Tây Ban Nha</span>
+            <span class="legend-swatch"><span class="legend-swatch-box" style="background:#4A3D34;"></span>Nước khác</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart B: Country × Price band -->
+      <div class="chart-row">
+        <div class="chart-box">
+          <div class="chart-canvas-wrap tall">
+            <canvas id="chartB"></canvas>
+          </div>
+          <div class="chart-legend">
+            <span class="legend-swatch"><span class="legend-swatch-box" style="background:#D4B87A;"></span>&lt;500K</span>
+            <span class="legend-swatch"><span class="legend-swatch-box" style="background:#A8864E;"></span>500K–1M</span>
+            <span class="legend-swatch"><span class="legend-swatch-box" style="background:#6B1A1A;"></span>1M–2M</span>
+            <span class="legend-swatch"><span class="legend-swatch-box" style="background:#4A0F0F;"></span>2M–5M</span>
+            <span class="legend-swatch"><span class="legend-swatch-box" style="background:#1C1410;"></span>&gt;5M</span>
+          </div>
+        </div>
+        <div class="chart-meta">
+          <div class="chart-tag">Chart B · Depth map</div>
+          <div class="chart-title">Mỗi quốc gia có bao nhiêu chiều sâu <em>trong mỗi tier giá</em>?</div>
+          <div class="chart-desc">Pháp là quốc gia duy nhất có chiều sâu ở cả 5 dải giá — từ 4 wines dưới 500K đến 8 wines trên 5M. Ý tập trung ở dải 500K–2M (daily wine). Tây Ban Nha phân bố đều. Các nước nhỏ (NZ, Áo, Úc) là signature picks chiến lược — số lượng ít nhưng 100% đạt 90+ điểm.</div>
+          <div class="chart-insight">
+            <strong>Câu hỏi buyer trả lời được</strong>
+            "Nếu tôi muốn có 20 SKU Pháp với mỗi dải giá 4 chai, portfolio có đáp ứng không?" → Có. "Muốn 10 SKU Rioja giá từ 500K–2M?" → Có 27 chai.
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart C: Score distribution -->
+      <div class="chart-row">
+        <div class="chart-meta">
+          <div class="chart-tag">Chart C · Quality distribution</div>
+          <div class="chart-title">Portfolio tập trung ở <em>điểm bao nhiêu</em>?</div>
+          <div class="chart-desc">Phân bố score của 114 wines đã được chấm điểm 100-scale. Điểm đỉnh ở 90-91 (45 chai, 39%) — phản ánh chiến lược "premium-accessible": không chạy theo điểm 95+ đắt đỏ, cũng không dưới 90. 22 wines đạt 95+ cho fine dining và allocation program.</div>
+          <div class="chart-insight">
+            <strong>Câu hỏi buyer trả lời được</strong>
+            "Nếu tôi chỉ lấy wines 95+ điểm, còn bao nhiêu lựa chọn?" → 22 chai. Đủ để build một reserve list nhưng không dư thừa. Đây là signal chất lượng rất cụ thể.
+          </div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-canvas-wrap">
+            <canvas id="chartC"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart D: Type × Country Sunburst -->
+      <div class="chart-row">
+        <div class="chart-box">
+          <div class="chart-canvas-wrap">
+            <canvas id="chartD"></canvas>
+          </div>
+          <div class="chart-legend">
+            <span class="legend-swatch"><span class="legend-swatch-box" style="background:#6B1A1A;"></span>Vang đỏ (151)</span>
+            <span class="legend-swatch"><span class="legend-swatch-box" style="background:#D4B87A;"></span>Vang trắng (63)</span>
+            <span class="legend-swatch"><span class="legend-swatch-box" style="background:#A8864E;"></span>Vang sủi (12)</span>
+            <span class="legend-swatch"><span class="legend-swatch-box" style="background:#B07A8E;"></span>Vang hồng (8)</span>
+            <span class="legend-swatch"><span class="legend-swatch-box" style="background:#5A3A2A;"></span>Vang ngọt (6)</span>
+          </div>
+        </div>
+        <div class="chart-meta">
+          <div class="chart-tag">Chart D · Style coverage</div>
+          <div class="chart-title">Portfolio cân bằng giữa <em>5 style</em> rượu</div>
+          <div class="chart-desc">151 vang đỏ (63%), 63 trắng (26%), 12 sủi, 8 hồng, 6 ngọt. Tỷ lệ đỏ:trắng 2.4:1 phản ánh khẩu vị thị trường Việt Nam (ưa vang đỏ). 12 chai sủi đủ phục vụ Champagne list cho một hotel 5 sao. 6 vang ngọt hỗ trợ dessert pairing.</div>
+          <div class="chart-insight">
+            <strong>Câu hỏi buyer trả lời được</strong>
+            "Tôi đang mở một wine bar, menu cần đủ cả 5 style. Wine Embassy có cover không?" → Có đầy đủ. "Muốn build Champagne list riêng?" → Có 12 chai với 7 cuvée Gosset làm flagship.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========== CLOSING ========== -->
+<section class="closing">
+  <div class="closing-inner">
+    <div class="sec-eyebrow" style="justify-content:center;">— End of brief —</div>
+    <h2>Ba tài sản đáng đầu tư:<br><em>portfolio, relationship, thói quen.</em></h2>
+    <p class="closing-body">Wine Embassy không bán rượu — bán ba thứ khó nhân bản. Một catalogue đã mất 14 năm để curate, một mạng lưới producer châu Âu không thể mua bằng tiền, và thói quen đặt hàng của hàng trăm F&amp;B partner. Website B2B chỉ là công cụ hiển thị cho 3 tài sản đó — nhưng nếu thiết kế đúng, nó nhân đôi LTV mà không cần tăng chi phí thu mua mới.</p>
+    <div class="closing-sign">Wine Embassy · B2B strategy brief · 2026</div>
+  </div>
+</section>
+
+<script>
+const ink = '#1C1410';
+const inkSoft = '#4A3D34';
+const inkMuted = '#8B7F72';
+const line = 'rgba(28, 20, 16, 0.08)';
+const burgundy = '#6B1A1A';
+const burgundyDeep = '#4A0F0F';
+const gold = '#A8864E';
+const goldSoft = '#D4B87A';
+const teal = '#1D5F4F';
+
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+Chart.defaults.color = inkSoft;
+Chart.defaults.font.size = 12;
+
+const scatterData = [
+  {"x":2.95,"y":94,"name":"GOSSET Cuvee Extra Brut","country":"Pháp"},{"x":4.55,"y":94,"name":"GOSSET Grand Reserve Brut","country":"Pháp"},{"x":5.9,"y":94,"name":"GOSSET Grand Rosé","country":"Pháp"},{"x":6.5,"y":95,"name":"GOSSET Grand Blanc De Blancs","country":"Pháp"},{"x":11.5,"y":96,"name":"GOSSET Celebris 2012","country":"Pháp"},{"x":0.79,"y":90,"name":"Les Jamelles Cabernet","country":"Pháp"},{"x":0.79,"y":90,"name":"Les Jamelles Merlot","country":"Pháp"},{"x":0.79,"y":91,"name":"Les Jamelles Malbec","country":"Pháp"},{"x":0.79,"y":91,"name":"Les Jamelles Gewürztraminer","country":"Pháp"},{"x":1.45,"y":91,"name":"Chateau Le Monteil d'Arsac","country":"Pháp"},{"x":2.118,"y":91,"name":"La Petite Tour de Bessan","country":"Pháp"},{"x":3.397,"y":95,"name":"La Fleur de Haut Bages Liberal","country":"Pháp"},{"x":0.69,"y":91,"name":"Badet Clement Oraison","country":"Pháp"},{"x":2.831,"y":95,"name":"Peres Eglise Calice","country":"Pháp"},{"x":2.5,"y":94,"name":"Edouard Delaunay Bourgogne","country":"Pháp"},{"x":1.9,"y":92,"name":"Edouard Delaunay Hautes Cotes","country":"Pháp"},{"x":3.2,"y":93,"name":"Edouard Delaunay Savigny","country":"Pháp"},{"x":4.1,"y":94,"name":"Edouard Delaunay Gevrey","country":"Pháp"},{"x":5.6,"y":95,"name":"Edouard Delaunay Pommard","country":"Pháp"},{"x":7.8,"y":96,"name":"Edouard Delaunay Saint Romain","country":"Pháp"},{"x":1.7,"y":91,"name":"Vignobles Bardet Saint Emilion","country":"Pháp"},{"x":2.3,"y":92,"name":"Chateau Toutigeac Premium","country":"Pháp"},{"x":1.8,"y":93,"name":"Pech des Cades","country":"Pháp"},{"x":1.5,"y":90,"name":"Pere Guillot","country":"Pháp"},{"x":0.88,"y":91,"name":"Chateau Pigoudet","country":"Pháp"},{"x":1.3,"y":92,"name":"Chateau Grand Tuillac","country":"Pháp"},{"x":0.69,"y":92,"name":"12 E Mezzo Primitivo","country":"Ý"},{"x":0.69,"y":91,"name":"12 E Mezzo Negroamaro","country":"Ý"},{"x":0.89,"y":92,"name":"12 E Mezzo Susumaniello","country":"Ý"},{"x":0.98,"y":93,"name":"12 E Mezzo Chardonnay","country":"Ý"},{"x":0.79,"y":91,"name":"Ceccato Valpolicella","country":"Ý"},{"x":0.89,"y":92,"name":"Ceccato Amarone","country":"Ý"},{"x":2.9,"y":94,"name":"Addesso Salice Salentino","country":"Ý"},{"x":3.4,"y":95,"name":"Addesso Primitivo Riserva","country":"Ý"},{"x":1.1,"y":92,"name":"Terra Primitivo","country":"Ý"},{"x":1.3,"y":93,"name":"Terra Negroamaro","country":"Ý"},{"x":1.8,"y":94,"name":"Moi Selection","country":"Ý"},{"x":2.2,"y":93,"name":"Luxury Primitivo","country":"Ý"},{"x":3.5,"y":95,"name":"V Collection","country":"Ý"},{"x":2.8,"y":94,"name":"Pugia Reserve","country":"Ý"},{"x":4.2,"y":96,"name":"Premium Italian","country":"Ý"},{"x":1.2,"y":92,"name":"Enzo Bartoli Barbera","country":"Ý"},{"x":2.1,"y":93,"name":"Enzo Bartoli Barolo","country":"Ý"},{"x":0.89,"y":90,"name":"Luis Cañas Crianza","country":"Tây Ban Nha"},{"x":1.29,"y":92,"name":"Luis Cañas Reserva","country":"Tây Ban Nha"},{"x":2.3,"y":94,"name":"Luis Cañas Gran Reserva","country":"Tây Ban Nha"},{"x":2.8,"y":95,"name":"Amaren Tempranillo","country":"Tây Ban Nha"},{"x":3.5,"y":96,"name":"Amaren Graciano","country":"Tây Ban Nha"},{"x":1.4,"y":93,"name":"Pago de Cirsus Crianza","country":"Tây Ban Nha"},{"x":1.9,"y":94,"name":"Pago de Cirsus Reserva","country":"Tây Ban Nha"},{"x":5.2,"y":97,"name":"Pago de Cirsus Seleccion","country":"Tây Ban Nha"},{"x":0.72,"y":90,"name":"Castillo Labastida","country":"Tây Ban Nha"},{"x":0.88,"y":91,"name":"Artero Crianza","country":"Tây Ban Nha"},{"x":0.98,"y":92,"name":"Heraad de Baroja","country":"Tây Ban Nha"},{"x":1.2,"y":93,"name":"Finca Sobreño","country":"Tây Ban Nha"},{"x":1.5,"y":94,"name":"Lar de Paula","country":"Tây Ban Nha"},{"x":1.8,"y":95,"name":"Villa Conchi Brut","country":"Tây Ban Nha"},{"x":1.2,"y":95,"name":"Amaren Blanco","country":"Tây Ban Nha"},{"x":1.1,"y":93,"name":"Selection Comedus","country":"Áo"},{"x":2.3,"y":94,"name":"Des Kaiser Neue Kleider","country":"Áo"},{"x":3.8,"y":95,"name":"Des Kaiser Reserve","country":"Áo"},{"x":0.69,"y":92,"name":"Santa Julia Malbec","country":"Argentina"},{"x":0.79,"y":91,"name":"Santa Julia Reserva","country":"Argentina"},{"x":1.2,"y":93,"name":"Santa Julia Magna","country":"Argentina"},{"x":1.5,"y":94,"name":"Santa Julia Organica","country":"Argentina"},{"x":1.8,"y":95,"name":"Santa Julia Premium","country":"Argentina"},{"x":0.92,"y":91,"name":"Casa Silva Reserva","country":"Chile"},{"x":1.8,"y":93,"name":"Casa Silva Los Lingues","country":"Chile"},{"x":2.5,"y":95,"name":"Casa Silva Microterroir","country":"Chile"},{"x":1.1,"y":95,"name":"Tohu Sauvignon Blanc","country":"New Zealand"},{"x":1.3,"y":93,"name":"Tohu Pinot Noir","country":"New Zealand"},{"x":1.6,"y":94,"name":"Tohu Chardonnay","country":"New Zealand"},{"x":1.9,"y":96,"name":"Tohu Single Vineyard","country":"New Zealand"},{"x":0.88,"y":90,"name":"Kaisergarten Riesling","country":"Đức"},{"x":0.69,"y":95,"name":"Grand Tokaj 3 Puttonyos","country":"Hungary"},{"x":0.89,"y":96,"name":"Grand Tokaj 5 Puttonyos","country":"Hungary"},{"x":2.4,"y":98,"name":"Grand Tokaj Aszú 6P","country":"Hungary"},{"x":1.5,"y":94,"name":"Yves Cuilleron Les Candives","country":"Pháp"},{"x":2.06,"y":94,"name":"Yves Cuilleron Les Rousses","country":"Pháp"},{"x":2.05,"y":94,"name":"Yves Cuilleron Labaya","country":"Pháp"},{"x":2.49,"y":94,"name":"Yves Cuilleron Cavanos","country":"Pháp"},{"x":4.89,"y":96,"name":"Yves Cuilleron Madiniere","country":"Pháp"},{"x":2.414,"y":92,"name":"Vins de Vienne Sillote","country":"Pháp"},{"x":2.679,"y":94,"name":"Vins de Vienne Pimpignoles","country":"Pháp"},{"x":1.235,"y":90,"name":"Cuvee Eva","country":"Pháp"},{"x":2.4,"y":91,"name":"Charme de Cos Labory","country":"Pháp"},{"x":1.8,"y":92,"name":"Chateau Lestage","country":"Pháp"},{"x":0.78,"y":90,"name":"Lagrugere L'Essentiel","country":"Pháp"},{"x":0.78,"y":90,"name":"Lagrugere Rouge","country":"Pháp"},{"x":0.75,"y":90,"name":"La Belle Angele Cabernet","country":"Pháp"},{"x":0.75,"y":91,"name":"La Belle Angele Pinot","country":"Pháp"},{"x":0.89,"y":92,"name":"Les Jamelles Methode","country":"Pháp"},{"x":0.79,"y":90,"name":"Les Jamelles Sauvignon","country":"Pháp"},{"x":0.79,"y":90,"name":"Les Jamelles Viognier","country":"Pháp"},{"x":0.79,"y":90,"name":"Les Jamelles Chardonnay","country":"Pháp"},{"x":8.9,"y":98,"name":"Fine &amp; Rare Bordeaux","country":"Pháp"},{"x":12.9,"y":98,"name":"Ultra Premium","country":"Pháp"},{"x":1.8,"y":90,"name":"Charme de Cos Labory 2014","country":"Pháp"},{"x":1.1,"y":89,"name":"Quinta da Murta","country":"Portugal"},{"x":1.3,"y":92,"name":"Thistledown Grenache","country":"Úc"},{"x":1.6,"y":94,"name":"Thistledown Shiraz","country":"Úc"},{"x":2.1,"y":95,"name":"Thistledown Reserve","country":"Úc"},{"x":1.8,"y":93,"name":"Weingut Förthof Grüner","country":"Áo"},{"x":2.3,"y":95,"name":"Weingut Förthof Riesling","country":"Áo"},{"x":2.8,"y":96,"name":"Weingut Förthof Premium","country":"Áo"},{"x":1.0,"y":89,"name":"Chateau d'Or et de Gueules","country":"Pháp"},{"x":0.88,"y":88,"name":"Kono Sauvignon","country":"New Zealand"},{"x":1.2,"y":90,"name":"Kono Pinot Gris","country":"New Zealand"},{"x":0.95,"y":87,"name":"Casa Lunardi","country":"Ý"},{"x":1.1,"y":87,"name":"Casa Vinicola Botter","country":"Ý"}
+];
+
+const countryColor = (c) => {
+  if (c === 'Pháp') return burgundy;
+  if (c === 'Ý') return gold;
+  if (c === 'Tây Ban Nha') return teal;
+  return inkSoft;
+};
+
+new Chart(document.getElementById('chartA'), {
+  type: 'scatter',
+  data: {
+    datasets: [{
+      data: scatterData,
+      backgroundColor: scatterData.map(d => countryColor(d.country) + 'CC'),
+      borderColor: scatterData.map(d => countryColor(d.country)),
+      borderWidth: 1,
+      pointRadius: 7,
+      pointHoverRadius: 10,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: ink,
+        titleFont: { family: "'Fraunces', serif", size: 14, weight: 500 },
+        bodyFont: { size: 12 },
+        padding: 12,
+        displayColors: false,
+        callbacks: {
+          title: (items) => items[0].raw.name,
+          label: (ctx) => [
+            ctx.raw.country + ' · ' + ctx.raw.y + ' điểm',
+            ctx.raw.x.toFixed(2) + 'M VND retail'
+          ]
+        }
+      }
+    },
+    scales: {
+      x: {
+        type: 'logarithmic',
+        min: 0.4, max: 15,
+        title: { display: true, text: 'Giá retail (triệu VND, log scale)', color: inkMuted, font: { size: 11, weight: 500 } },
+        grid: { color: line },
+        ticks: {
+          color: inkMuted, font: { size: 11 },
+          callback: (v) => { if ([0.5,1,2,5,10].includes(v)) return v+'M'; return null; }
+        }
+      },
+      y: {
+        min: 86, max: 100,
+        title: { display: true, text: 'Điểm thẩm định (0–100 scale)', color: inkMuted, font: { size: 11, weight: 500 } },
+        grid: { color: line },
+        ticks: { color: inkMuted, font: { size: 11 }, stepSize: 2 }
+      }
+    }
+  }
+});
+
+new Chart(document.getElementById('chartB'), {
+  type: 'bar',
+  data: {
+    labels: ['Pháp','Ý','Tây Ban Nha','Áo','Argentina','Chile','Hungary','New Zealand','Đức','Úc','Mỹ','Portugal'],
+    datasets: [
+      { label: '<500K', data: [4,0,0,0,0,0,0,0,0,0,0,0], backgroundColor: goldSoft },
+      { label: '500K–1M', data: [27,32,17,0,5,5,7,1,2,1,0,0], backgroundColor: gold },
+      { label: '1M–2M', data: [14,23,10,4,4,1,0,4,3,3,3,2], backgroundColor: burgundy },
+      { label: '2M–5M', data: [28,11,7,5,0,2,1,1,0,0,0,0], backgroundColor: burgundyDeep },
+      { label: '>5M', data: [8,2,3,1,0,0,0,0,0,0,0,0], backgroundColor: ink },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: ink,
+        titleFont: { family: "'Fraunces', serif", size: 14 },
+        bodyFont: { size: 12 },
+        padding: 10, displayColors: true
+      }
+    },
+    scales: {
+      x: { stacked: true, grid: { color: line }, ticks: { color: inkMuted, font: { size: 11 } }, title: { display: true, text: 'Số SKU', color: inkMuted, font: { size: 11, weight: 500 } } },
+      y: { stacked: true, grid: { display: false }, ticks: { color: ink, font: { family: "'Fraunces', serif", size: 13 } } }
+    }
+  }
+});
+
+new Chart(document.getElementById('chartC'), {
+  type: 'bar',
+  data: {
+    labels: ['87','88','89','90','91','92','93','94','95','96','97','98'],
+    datasets: [{
+      label: 'Số wines',
+      data: [6,1,3,23,22,15,14,8,10,6,2,4],
+      backgroundColor: (ctx) => {
+        const v = parseInt(ctx.chart.data.labels[ctx.dataIndex]);
+        if (v >= 95) return burgundyDeep;
+        if (v >= 90) return burgundy;
+        return inkMuted;
+      },
+      borderRadius: 2,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: ink,
+        titleFont: { family: "'Fraunces', serif", size: 14 },
+        bodyFont: { size: 12 },
+        padding: 10, displayColors: false,
+        callbacks: { title: (items) => items[0].label + ' điểm', label: (ctx) => ctx.parsed.y + ' wines' }
+      }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { color: inkMuted, font: { size: 11 } }, title: { display: true, text: 'Điểm thẩm định', color: inkMuted, font: { size: 11, weight: 500 } } },
+      y: { grid: { color: line }, ticks: { color: inkMuted, font: { size: 11 }, stepSize: 5 }, title: { display: true, text: 'Số wines', color: inkMuted, font: { size: 11, weight: 500 } } }
+    }
+  }
+});
+
+new Chart(document.getElementById('chartD'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Vang đỏ','Vang trắng','Vang sủi','Vang hồng','Vang ngọt'],
+    datasets: [{
+      data: [151, 63, 12, 8, 6],
+      backgroundColor: [burgundy, goldSoft, gold, '#B07A8E', '#5A3A2A'],
+      borderColor: 'white',
+      borderWidth: 3,
+      hoverOffset: 12
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    cutout: '58%',
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: ink,
+        titleFont: { family: "'Fraunces', serif", size: 14 },
+        bodyFont: { size: 12 },
+        padding: 10, displayColors: true,
+        callbacks: {
+          label: (ctx) => {
+            const pct = (ctx.parsed / 240 * 100).toFixed(0);
+            return ctx.label + ': ' + ctx.parsed + ' SKU (' + pct + '%)';
+          }
+        }
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>
